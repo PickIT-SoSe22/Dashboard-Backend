@@ -30,8 +30,8 @@ public class Generator
             Expires = utcNow.AddMinutes(expireTime),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(symKey), SecurityAlgorithms.HmacSha256Signature),
-            Issuer = "HCI_ToDo",
-            Audience = "todo.peasantpath.com"
+            Issuer = "PickIt_Backend_V1",
+            Audience = "mqtt.castrumnubis.com"
         };
         var sToken = tokenHandler.CreateToken(tokenDesc);
         var token = tokenHandler.WriteToken(sToken);
