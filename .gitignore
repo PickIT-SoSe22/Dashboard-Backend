@@ -1,2 +1,10 @@
 
 .idea/.idea.Dashboard-Backend/.idea/
+
+bin/Debug/net6.0/appsettings.Development.json
+
+appsettings.json
+
+bin/
+obj/
+appsettings.Development.json
