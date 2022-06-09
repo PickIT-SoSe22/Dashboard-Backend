@@ -25,14 +25,14 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 });
-builder.Services.AddSingleton<Generator>();
-builder.Services.AddSingleton<Validator>();
-builder.Services.AddSingleton<AccessRightCheck>();
+
 builder.Services.AddLinqToDBContext<DatabaseMain>((provider, options) =>
 {
     options.UseMySql(builder.Configuration["Database:ConnectionString"]);
 });
 
+builder.Services.AddSingleton<Generator>();
+builder.Services.AddSingleton<Validator>();
 
 
 var app = builder.Build();
