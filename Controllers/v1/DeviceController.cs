@@ -1,4 +1,5 @@
 using Dashboard_Backend.Database;
+using Dashboard_Backend.Database.Models;
 using Dashboard_Backend.Helpers;
 using LinqToDB;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,10 @@ public class DeviceController : ControllerBase
     [ProducesResponseType(typeof(StatusCodeResult), 500)]
     public async Task<IActionResult> NewAsync([FromBody] Device newDevice)
     {
-        if (!await _accessRightCheck.CheckAccessRights(HttpContext.Items["Validated_Token"] as ValidatedToken))
+        var checkKvp =
+            await _accessRightCheck.CheckAccessRights(HttpContext.Items["Validated_Token"] as ValidatedToken);
+        
+        if (!checkKvp.Key || checkKvp.Value == null)
         {
             return BadRequest(new
             {
@@ -32,6 +36,26 @@ public class DeviceController : ControllerBase
             });
         }
 
+        var dbDevice = new DeviceModel()
+        {
+            DeviceName = newDevice.DeviceName,
+            DeviceType = newDevice.DeviceType,
+            UId = checkKvp.Value.UId
+        };
+
+        var insertedId = Convert.ToInt32(await _database.InsertWithIdentityAsync(dbDevice));
+
+        dbDevice.DId = insertedId;
+        
+        return insertedId != 0 ? Ok(dbDevice) : StatusCode(500);
+    }
+
+    [HttpGet("{id}"), JwtAuthentication]
+    [ProducesResponseType(typeof(TokenResponse), 200)]
+    [ProducesResponseType(typeof(ConflictResult), 409)]
+    [ProducesResponseType(typeof(StatusCodeResult), 500)]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
         return Ok();
     }
 }

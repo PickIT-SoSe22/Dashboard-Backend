@@ -12,14 +12,18 @@ public class AccessRightCheck
         _database = database;
     }
     
-    public async Task<bool> CheckAccessRights(ValidatedToken? validatedToken)
+    public async Task<KeyValuePair<bool, UserModel?>> CheckAccessRights(ValidatedToken? validatedToken)
     {
+        KeyValuePair<bool, UserModel?> kvp;
+        
         if (validatedToken is not ValidatedToken token)
         {
-            return false;
+            kvp = new KeyValuePair<bool, UserModel?>(false, null);
+            return kvp;
         }
         
         var user = await _database.Users.FirstOrDefaultAsync(u => u.Username == token.Username);
-        return user != null;
+        kvp = new KeyValuePair<bool, UserModel?>(true, user);
+        return kvp;
     }
 }
