@@ -21,8 +21,7 @@ public class Validator
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var validationParameters = GetValidationParameters();
-
-
+        
         try
         {
             var principal = tokenHandler.ValidateToken(token, validationParameters, out var securityToken);
@@ -53,8 +52,8 @@ public class Validator
             ValidateLifetime = false,
             ValidateAudience = true,
             ValidateIssuer = true,
-            ValidIssuer = "HCI_ToDo",
-            ValidAudience = "todo.peasantpath.com",
+            ValidIssuer = "PickIt_Backend_V1",
+            ValidAudience = "mqtt.castrumnubis.com",
             IssuerSigningKey = new SymmetricSecurityKey(symKey),
             SignatureValidator = (token, parameters) => new JwtSecurityToken(token)
         };
