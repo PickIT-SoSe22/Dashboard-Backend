@@ -35,6 +35,9 @@ builder.Services.AddSingleton<Generator>();
 builder.Services.AddSingleton<Validator>();
 
 
+builder.Services.AddTransient<AccessRightCheck>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
